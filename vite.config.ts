@@ -11,11 +11,7 @@ const PUBLIC_ASSETS_DIR_PATH = resolve(__dirname, 'static')
 const OUTPUT_DIR_PATH = resolve(__dirname, 'dist')
 const ENV_DIR_PATH = __dirname
 
-export default defineConfig(({ mode }) => {
-  const isProductionMode = mode === 'production'
-  const appVersion = isProductionMode ? process.env.npm_package_version : `${process.env.npm_package_version}-${mode}`
-  const esbuildPure = isProductionMode ? ['console.log', 'console.info', 'console.debug', 'console.trace'] : undefined
-
+export default defineConfig(() => {
   return {
     root: ROOT_DIR_PATH,
     publicDir: PUBLIC_ASSETS_DIR_PATH,
@@ -27,19 +23,11 @@ export default defineConfig(({ mode }) => {
       emptyOutDir: true,
       manifest: true,
     },
-    esbuild: {
-      pure: esbuildPure,
-    },
     plugins: [
       react(),
       eslintPlugin(),
       createHtmlPlugin({
         minify: true,
-        inject: {
-          data: {
-            appVersion,
-          },
-        },
       }),
     ],
     resolve: {
